@@ -114,7 +114,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     mr={2}
                   />
                 ) : (
-                  <Icon as={BsBook} fontSize="18pt" mr={1} color="blue.500" />
+                  <Icon as={BsBook} fontSize="18pt" mr={1} color="yellow.500" />
                 )}
                 <Link href={`/${post.bookId}`}>
                   <Text

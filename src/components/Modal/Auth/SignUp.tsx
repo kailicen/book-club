@@ -99,7 +99,7 @@ const SignUp: React.FC = () => {
         Sign Up
       </Button>
       <Flex fontSize="9pt" justifyContent="center">
-        <Text mr={1}>Already a redditor?</Text>
+        <Text mr={1}>Already have an account?</Text>
         <Text
           color="yellow.500"
           fontWeight={700}

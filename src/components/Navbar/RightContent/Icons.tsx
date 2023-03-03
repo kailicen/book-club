@@ -36,6 +36,8 @@ const Icons: React.FC<IconsProps> = ({ user }) => {
       }));
       setComments(comments as Comment[]);
       console.log(`comments: ${comments.map((c) => c.id)}`);
+
+      // set notification state to true, and comments to unreadComments when getting date from database
       if (Object.keys(comments).length > 0) {
         setNotificationStateValue({
           notification: true,
@@ -48,17 +50,16 @@ const Icons: React.FC<IconsProps> = ({ user }) => {
   };
 
   const handleNotifications = () => {
+    // set notification state to false when clicked the notification button
     setNotificationStateValue((prev) => ({
       ...prev,
       notification: false,
     }));
-    console.log(`after: ${notificationStateValue.notification}`);
     router.push("/notifications");
   };
 
   useEffect(() => {
     getPostComments();
-    console.log(`before: ${notificationStateValue.notification}`);
   }, [user]);
 
   return (

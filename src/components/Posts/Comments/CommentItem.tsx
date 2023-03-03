@@ -96,7 +96,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </Stack>
 
         {editingCommentId === comment.id ? (
-          <Stack direction="column" width="400px">
+          <Stack direction="column" width="100%">
             <Textarea
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}

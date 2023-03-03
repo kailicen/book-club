@@ -12,10 +12,9 @@ import {
 import { signOut, User } from "firebase/auth";
 import { VscAccount } from "react-icons/vsc";
 import { CgProfile } from "react-icons/cg";
-import { MdOutlineLogin, MdOutlineQuestionAnswer } from "react-icons/md";
+import { MdOutlineLogin } from "react-icons/md";
 import { auth } from "../../../firebase/clientApp";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { authModalState } from "../../../atoms/authModalAtom";
+import { useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
 import { profilePicState } from "@/atoms/profilePicAtom";
 
@@ -55,16 +54,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         </Flex>
       </MenuButton>
       <MenuList bg="gray.800" border="none">
-        <MenuItem
-          bg="gray.800"
-          fontSize="10pt"
-          _hover={{ bg: "gray.700", color: "white" }}
-        >
-          <Flex align="center">
-            <Icon fontSize={20} mr={2} as={MdOutlineQuestionAnswer} />
-            My Q & A
-          </Flex>
-        </MenuItem>
         <MenuItem
           bg="gray.800"
           fontSize="10pt"

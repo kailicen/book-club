@@ -2,28 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { notificationState, Comment } from "@/atoms/notificationAtom";
 import PageContent from "@/components/Layout/PageContent";
-import { Flex, Icon, Stack, Text } from "@chakra-ui/react";
-import moment from "moment";
-import { BiComment } from "react-icons/bi";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import useBookData from "@/hooks/useBookData";
 import {
   collection,
   getDocs,
+  orderBy,
   query,
   where,
   writeBatch,
 } from "firebase/firestore";
 import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { User } from "firebase/auth";
 import Notifications from "@/components/Notifications/Notifications";
+import { useRouter } from "next/router";
 
 const NotificationPage: React.FC = () => {
   const [notificationStateValue, setNotificationStateValue] =
     useRecoilState(notificationState);
   const { bookStateValue } = useBookData();
   const [user, loading, error] = useAuthState(auth);
-  const [readComments, setReadComments] = useState<Comment[]>();
+  const [unreadComments, setUnreadComments] = useState<Comment[]>([]);
+  const [readComments, setReadComments] = useState<Comment[]>([]);
+  const router = useRouter();
 
   const updateReadStatus = async () => {
     try {
@@ -55,7 +56,8 @@ const NotificationPage: React.FC = () => {
       const readCommentsQuery = query(
         collection(firestore, "comments"),
         where("read", "==", true),
-        where("postCreatorId", "==", user?.uid)
+        where("postCreatorId", "==", user?.uid),
+        orderBy("createdAt", "desc")
       );
       const readCommentDocs = await getDocs(readCommentsQuery);
 
@@ -72,7 +74,31 @@ const NotificationPage: React.FC = () => {
   useEffect(() => {
     getReadComments();
     updateReadStatus();
+    if (notificationStateValue.comments.length > 0) {
+      setUnreadComments(notificationStateValue.comments);
+    } else {
+    }
   }, [user]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      // Do something when the user leaves the page
+      console.log("Leaving page");
+      // empty recoil state: comments
+      setNotificationStateValue((prev) => ({
+        ...prev,
+        comments: [],
+      }));
+    };
+
+    // Add event listener for when the route changes
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <>
@@ -80,7 +106,7 @@ const NotificationPage: React.FC = () => {
         <>
           <Stack>
             <Text color="gray.300">New comments</Text>
-            {Object.keys(notificationStateValue.comments).length > 0 ? (
+            {unreadComments.length > 0 ? (
               <Flex
                 direction="column"
                 justify="center"
@@ -91,7 +117,7 @@ const NotificationPage: React.FC = () => {
                 pb={2}
                 gap={2}
               >
-                <Notifications comments={notificationStateValue.comments} />
+                <Notifications comments={unreadComments} />
               </Flex>
             ) : (
               <Flex

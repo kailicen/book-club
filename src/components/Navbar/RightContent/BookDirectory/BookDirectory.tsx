@@ -23,7 +23,7 @@ const BookDirectory: React.FC = () => {
         borderRadius="full"
         height="34px"
         mt={0.5}
-        mr={3}
+        mr={2}
         fontSize="10pt"
         _hover={{
           bg: "gray.700",

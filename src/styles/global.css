@@ -1,0 +1,13 @@
+.ais-Highlight-highlighted {
+  background-color: #d69e2e;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.ais-SearchBox {
+  display: none;
+}
+
+form {
+  width: 100%;
+}

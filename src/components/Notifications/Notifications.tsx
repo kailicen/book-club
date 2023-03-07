@@ -5,7 +5,6 @@ import { Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { BiComment } from "react-icons/bi";
 import { useSetRecoilState } from "recoil";
 

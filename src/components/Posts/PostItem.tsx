@@ -109,6 +109,7 @@ const PostItem: React.FC<PostItemProps> = ({
                 {post.bookImageURL ? (
                   <Image
                     src={post.bookImageURL}
+                    alt="book icon"
                     borderRadius="full"
                     boxSize="18px"
                     mr={2}

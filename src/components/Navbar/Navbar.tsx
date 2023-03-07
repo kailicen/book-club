@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
         >
           <Image src="/images/logo192-wisingup.png" height="30px" alt="logo" />
           <Text fontSize="17px" display={{ base: "none", md: "block" }}>
-            WisingUp.org
+            Book Clubs
           </Text>
         </Flex>
       </Link>

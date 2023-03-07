@@ -44,11 +44,11 @@ import { Book, bookState } from "@/atoms/booksAtom";
 import useBookData from "@/hooks/useBookData";
 import { useRouter } from "next/router";
 
-type BookPageProps = {
+type UserProfileProps = {
   user: User;
 };
 
-const UserProfilePage: React.FC<BookPageProps> = ({ user }) => {
+const UserProfilePage: React.FC<UserProfileProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const { postStateValue, setPostStateValue, onDeletePost, onSelectPost } =
     usePosts();
@@ -369,13 +369,13 @@ const UserProfilePage: React.FC<BookPageProps> = ({ user }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // get user data and pass it to client
   try {
-    const bookDocRef = doc(firestore, "users", context.query.uid as string);
-    const bookDoc = await getDoc(bookDocRef);
+    const userDocRef = doc(firestore, "users", context.query.uid as string);
+    const userDoc = await getDoc(userDocRef);
 
     return {
       props: {
-        user: bookDoc.exists()
-          ? JSON.parse(safeJsonStringify({ id: bookDoc.id, ...bookDoc.data() }))
+        user: userDoc.exists()
+          ? JSON.parse(safeJsonStringify({ id: userDoc.id, ...userDoc.data() }))
           : "",
       },
     };

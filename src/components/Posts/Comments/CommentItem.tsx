@@ -9,6 +9,8 @@ import {
   Text,
   Textarea,
   Image,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { doc, Timestamp, writeBatch } from "firebase/firestore";
 import moment from "moment";
@@ -47,9 +49,15 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const [commentText, setCommentText] = useState<string>("");
   const [updatedComment, setUpdatedComment] = useState<Comment>();
   const setPostState = useSetRecoilState(postState);
+  const [error, setError] = useState("");
 
   const onUpdateComment = async (comment: Comment) => {
+    if (commentText === "") {
+      setError("Text cannot be empty. ");
+      return;
+    }
     try {
+      setError("");
       const batch = writeBatch(firestore);
 
       // update comment document
@@ -98,6 +106,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
         {editingCommentId === comment.id ? (
           <Stack direction="column" width="100%">
             <Textarea
+              required
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               fontSize="10pt"
@@ -126,6 +135,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 Update
               </Button>
             </Flex>
+            {error && (
+              <Alert status="error" bg="red.200">
+                <AlertIcon />
+                <Text mr={2}>{error}</Text>
+              </Alert>
+            )}
           </Stack>
         ) : (
           <>

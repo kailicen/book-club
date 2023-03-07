@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Flex,
   SkeletonCircle,
@@ -39,9 +41,15 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, bookId }) => {
   const [createLoading, setCreateLoading] = useState(false);
   const [loadingDeleteId, setLoadingDeleteId] = useState("");
   const setPostState = useSetRecoilState(postState);
+  const [error, setError] = useState("");
 
   const onCreateComment = async () => {
+    if (commentText === "") {
+      setError("Text cannot be empty. ");
+      return;
+    }
     setCreateLoading(true);
+    setError("");
     try {
       const batch = writeBatch(firestore);
 
@@ -159,6 +167,12 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, bookId }) => {
             createLoading={createLoading}
             onCreateComment={onCreateComment}
           />
+        )}
+        {error && (
+          <Alert status="error" bg="red.200">
+            <AlertIcon />
+            <Text mr={2}>{error}</Text>
+          </Alert>
         )}
       </Flex>
       <Stack spacing={6} p={2}>

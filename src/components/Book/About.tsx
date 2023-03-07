@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Divider,
   Flex,
@@ -12,7 +14,7 @@ import {
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Book, bookState } from "../../atoms/booksAtom";
 import { auth, firestore, storage } from "../../firebase/clientApp";
@@ -43,6 +45,7 @@ const About: React.FC<AboutProps> = ({ bookData }) => {
     author: "",
   });
   const router = useRouter();
+  const [error, setError] = useState("");
 
   const onUpdateImage = async () => {
     if (!selectedFile) return;
@@ -85,6 +88,12 @@ const About: React.FC<AboutProps> = ({ bookData }) => {
   };
 
   const onUpdateBook = async () => {
+    if (textInputs.title === "" || textInputs.author === "") {
+      setError("Title/author cannot be empty. ");
+      return;
+    }
+
+    setError("");
     try {
       setUpdatedBook({ title: textInputs.title, author: textInputs.author });
 
@@ -137,6 +146,10 @@ const About: React.FC<AboutProps> = ({ bookData }) => {
     }
   };
 
+  useEffect(() => {
+    console.log(`about page: ${bookData}`);
+  }, [bookData]);
+
   return (
     <Box position="sticky" top="14px">
       <Flex
@@ -173,6 +186,12 @@ const About: React.FC<AboutProps> = ({ bookData }) => {
                   onChange={onTextChange}
                   variant="filled"
                 ></Input>
+                {error && (
+                  <Alert status="error" bg="red.200">
+                    <AlertIcon />
+                    <Text mr={2}>{error}</Text>
+                  </Alert>
+                )}
               </>
             ) : (
               <>

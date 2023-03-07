@@ -23,14 +23,14 @@ const UpdatePostForm: React.FC = () => {
     body: postStateValue.selectedPost?.body,
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   const handleUpdatePost = async () => {
     const { bookId } = router.query;
     // update post object => type Post
 
     if (textInputs.title === "") {
-      setError(true);
+      setError("Title cannot be empty");
       return;
     }
 
@@ -66,7 +66,7 @@ const UpdatePostForm: React.FC = () => {
       router.push(`/${bookId}/comments/${postId}`);
     } catch (error: any) {
       console.log("handleUpdatePost error", error.message);
-      setError(true);
+      setError(error.message);
     }
     setLoading(false);
   };
@@ -132,7 +132,7 @@ const UpdatePostForm: React.FC = () => {
       {error && (
         <Alert status="error" bg="red.200">
           <AlertIcon />
-          <Text mr={2}>Error updating post</Text>
+          <Text mr={2}>{error}</Text>
         </Alert>
       )}
     </Flex>

@@ -32,16 +32,17 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, bookImageURL }) => {
     body: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   const handleCreatePost = async () => {
     const { bookId } = router.query;
     // create new post object => type Post
 
     if (textInputs.title === "") {
-      setError(true);
+      setError("Title cannot be empty. ");
+      return;
     }
-
+    setError("");
     const newPost: Post = {
       bookId: bookId as string,
       bookImageURL: bookImageURL || "",
@@ -62,7 +63,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, bookImageURL }) => {
       router.back();
     } catch (error: any) {
       console.log("handleCreatePost error", error.message);
-      setError(true);
+      setError(error.message);
     }
     setLoading(false);
   };
@@ -133,7 +134,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user, bookImageURL }) => {
       {error && (
         <Alert status="error" bg="red.200">
           <AlertIcon />
-          <Text mr={2}>Error creating post</Text>
+          <Text mr={2}>{error}</Text>
         </Alert>
       )}
     </Flex>

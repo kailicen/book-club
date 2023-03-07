@@ -43,6 +43,7 @@ const Notifications: React.FC<NotificationsProps> = ({ comments }) => {
           bg="gray.800"
           borderRadius="4px"
           p={1}
+          width="100%"
           cursor="pointer "
           onClick={() => {
             openComment(item.bookId, item.postId);
